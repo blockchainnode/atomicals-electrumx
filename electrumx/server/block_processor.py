@@ -493,6 +493,9 @@ class BlockProcessor:
             height += 1
             is_unspendable = (is_unspendable_genesis if height >= genesis_activation
                               else is_unspendable_legacy)
+            # create before 808080 snapshot, need stop.
+            if self.is_atomicals_activated(height):
+                raise IndexError(f'create snapshot. need stop.')
             undo_info, atomicals_undo_info = self.advance_txs(block.transactions, is_unspendable, block.header, height)
             if height >= min_height:
                 self.undo_infos.append((undo_info, height))
